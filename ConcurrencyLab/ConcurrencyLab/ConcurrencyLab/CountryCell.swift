@@ -8,18 +8,33 @@
 
 import UIKit
 
-class CountryCell {
+class CountryCell: UITableViewCell {
     
     @IBOutlet weak var countryImage: UIImageView!
     @IBOutlet weak var countryName: UILabel!
     @IBOutlet weak var countryCapital: UILabel!
     @IBOutlet weak var countryPopulation: UILabel!
     
-    
     func configureCell(for country: CountryDataLoad) {
         
         countryName.text = country.name
         countryCapital.text = country.capital
         countryPopulation.text = country.population.description
+ 
+        ImageClient.getImage(for: "https://www.countryflags.io/\(country.alpha2Code)/flat/64.png") { (result) in
+            
+            switch result {
+            case .failure:
+                DispatchQueue.main.async {
+                    self.countryImage.image = UIImage(systemName: "xmark")
+                }
+            case .success(let image):
+                DispatchQueue.main.async {
+                    self.countryImage.image = image
+                }
+            }
+        }
+        
+        
     }
 }

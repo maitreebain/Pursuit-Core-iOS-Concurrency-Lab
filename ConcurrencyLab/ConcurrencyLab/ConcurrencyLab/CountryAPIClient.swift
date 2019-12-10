@@ -10,16 +10,7 @@ import Foundation
 
 struct CountryAPIClient {
     
-    enum NetworkError: Error {
-        case badURL(String)
-        case networkClientError(Error)
-        case noResponse
-        case badStatus(Int)
-        case noData
-        case decodingError(Error)
-    }
-    
-    static func fetchData(completion: @escaping (Result<[CountryDataLoad], NetworkError>) -> ()) {
+    static func fetchData(completion: @escaping (Result<[CountryDataLoad], AppError>) -> ()) {
         let endPointString = "https://restcountries.eu/rest/v2/name/united"
         
         guard let url = URL(string: endPointString) else {
@@ -46,18 +37,19 @@ struct CountryAPIClient {
         case 200...299:
             break
         default:
-            completion(.failure(.badStatus(urlResponse.statusCode)))
+            completion(.failure(.badStatusCode(urlResponse.statusCode)))
         }
         
         do {
-            let mushroom = try JSONDecoder().decode([CountryDataLoad].self, from: data)
+            let data = try JSONDecoder().decode([CountryDataLoad].self, from: data)
             
-            completion(.success(mushroom))
+            completion(.success(data))
         } catch {
             completion(.failure(.decodingError(error)))
+            }
+            
         }
-        
-    }
+        dataTask.resume()
     
 }
 }
