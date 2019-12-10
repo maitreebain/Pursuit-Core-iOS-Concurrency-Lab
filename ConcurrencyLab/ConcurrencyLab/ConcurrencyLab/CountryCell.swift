@@ -18,8 +18,8 @@ class CountryCell: UITableViewCell {
     func configureCell(for country: CountryDataLoad) {
         
         countryName.text = country.name
-        countryCapital.text = country.capital
-        countryPopulation.text = country.population.description
+        countryCapital.text = "Capital: \(country.capital)"
+        countryPopulation.text = "Population: \(country.population.description)"
  
         ImageClient.getImage(for: "https://www.countryflags.io/\(country.alpha2Code)/flat/64.png") { (result) in
             
