@@ -14,3 +14,4 @@ struct CountryDataLoad: Decodable {
     let capital: String
     let population: Int
 }
+

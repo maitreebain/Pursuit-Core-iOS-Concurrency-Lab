@@ -10,7 +10,7 @@ import Foundation
 
 struct CountryAPIClient {
     
-    static func fetchData(completion: @escaping (Result<[CountryDataLoad], AppError>) -> ()) {
+    static func getData(completion: @escaping (Result<[CountryDataLoad], AppError>) -> ()) {
         let endPointString = "https://restcountries.eu/rest/v2/name/united"
         
         guard let url = URL(string: endPointString) else {
