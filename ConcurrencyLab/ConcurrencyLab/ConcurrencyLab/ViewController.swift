@@ -22,6 +22,22 @@ class ViewController: UIViewController {
         }
     }
     
+    var searchQuery = "" {
+        didSet {
+            CountryAPIClient.getData { (result) in
+                
+                switch result{
+                case .failure(let appError):
+                    print("\(appError)")
+                case .success(let data):
+                    DispatchQueue.main.async {
+                        self.countries = data.filter {$0.name.lowercased().contains(self.searchQuery.lowercased())}
+                    }
+                }
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,13 +48,15 @@ class ViewController: UIViewController {
         }
     
     func loadData() {
-        CountryAPIClient.getData { (result) in
+        CountryAPIClient.getData { [weak self] (result) in
             
             switch result{
             case .failure(let appError):
                 print("\(appError)")
             case .success(let data):
-                self.countries = data
+                DispatchQueue.main.async {
+                    self?.countries = data
+                }
             }
         
         }
@@ -84,4 +102,19 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension ViewController: UISearchBarDelegate {
     
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        if searchText.count == 0 {
+            loadData()
+            return
+        }
+            
+            searchQuery = searchText
+        
+    }
 }
