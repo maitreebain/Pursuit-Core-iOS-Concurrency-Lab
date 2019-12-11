@@ -28,6 +28,10 @@ class ViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         searchBar.delegate = self
+        loadData()
+        }
+    
+    func loadData() {
         CountryAPIClient.getData { (result) in
             
             switch result{
@@ -38,7 +42,7 @@ class ViewController: UIViewController {
             }
         
         }
-        }
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let countriesDetailVC = segue.destination as? CountriesDetailViewController,

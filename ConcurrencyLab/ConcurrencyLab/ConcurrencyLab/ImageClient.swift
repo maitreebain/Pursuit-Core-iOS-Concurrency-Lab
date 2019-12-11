@@ -11,7 +11,7 @@ import UIKit
 struct ImageClient {
     
     static func getImage(for urlString: String,
-                       completion: @escaping (Result<UIImage?, Error>) -> ()) {
+                       completion: @escaping (Result<UIImage?, AppError>) -> ()) {
     
     guard let url = URL(string: urlString) else {
         print("no image url found \(urlString)")
